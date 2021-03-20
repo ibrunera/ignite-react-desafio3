@@ -25,8 +25,9 @@ const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const { addProduct, cart } = useCart();
 
+
   const cartItemsAmount = cart.reduce((acc, product) => {
-    acc[product.id] += product.amount
+    acc[product.id]=product.amount
     return acc
   }, {} as CartItemsAmount)
 
@@ -35,14 +36,16 @@ const Home = (): JSX.Element => {
       api.get('products').then(response => {
         const unformatedProducts:ProductFormatted[] = response.data
         unformatedProducts.forEach(product => product.priceFormatted = formatPrice(product.price))
+
         setProducts(unformatedProducts)
       })
+
     }
     loadProducts();
   }, []);
-
+  
   function handleAddProduct(id: number) {
-    // TODO
+    addProduct(id)
   }
 
   return (
@@ -55,7 +58,7 @@ const Home = (): JSX.Element => {
           <button
             type="button"
             data-testid="add-product-button"
-          // onClick={() => handleAddProduct(product.id)}
+            onClick={() => handleAddProduct(product.id)}
           >
             <div data-testid="cart-product-quantity">
               <MdAddShoppingCart size={16} color="#FFF" />
